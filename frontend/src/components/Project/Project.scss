@@ -1,0 +1,40 @@
+@import '../../styles/variables.scss';
+
+.project-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .project-link {
+        width: 100%;
+        padding: 20px;
+        border: 1px solid white;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        display: flex;
+        justify-content: flex-start;
+
+        &:hover {
+            box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
+        }
+
+    }
+
+    .faTrash{
+        margin-left: 20px;
+        cursor: pointer;
+
+        path {
+            &:hover{
+                color: $danger;
+            } 
+
+            &:active{
+                color: $danger-dark;
+            } 
+        }
+    }
+}
+

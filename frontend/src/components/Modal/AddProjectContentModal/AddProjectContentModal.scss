@@ -1,0 +1,54 @@
+@import '../../../styles/variables.scss';
+
+.add-project-content-modal {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+
+    p {
+        font-size: 12pt;
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+
+    form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        // align-items: flex-start;
+
+        label {
+            font-size: 12pt;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            border-radius: 7px;
+            border: 1px solid $gray;
+            font-size: 12pt;
+            padding: 5px 10px;
+
+            &:focus { 
+                border: 1px  solid $green; 
+                outline: none;
+            }
+        }
+
+        p {
+            font-size: 10pt;
+            font-weight: 400;
+            color: $danger;
+            align-self: flex-start;
+        }
+
+        .btns {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+
+            input {
+                margin: 0 0 0 20px;
+            }
+        }
+    }
+}

@@ -1,40 +1,25 @@
 import './MainPage.scss';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Project from '../../components/Project/Project';
 import Spinner from '../../components/Spinner/Spinner';
 import useTasksTrackerService from '../../services/TasksTrackerService';
-// import withModal from '../../components/Modal/Modal';
+import withModal from '../../components/Modal/ModalHOC/Modal';
+import AddProjectContentModal from '../../components/Modal/AddProjectContentModal/AddProjectContentModal';
+import { showAddProjectModal } from '../../redux/actions/modalAction';
 
 const MainPage = () => {
-  const { getData, postNewProject } = useTasksTrackerService();
-  const projects = useSelector((state) => state.projects);
-  const projectsLoadingStatus = useSelector((state) => state.projectsLoadingStatus);
-  // const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
+  const { getData } = useTasksTrackerService();
+  const { projects } = useSelector((state) => state.projectsReducer);
+  const { projectsLoadingStatus } = useSelector((state) => state.projectsReducer);
+  const isShowAddProjectModal = useSelector((state) => state.modalReducer.showAddProjectModal);
 
-  // const ModalContent = () => {
-  //   return <h1>Hello</h1>;
-  // };
+  const AddProjectModal = withModal(AddProjectContentModal);
 
-  // const AddProjectModal = withModal(AddProjectModalContent);
-
-  const onAddProject = (e) => {
-    e.preventDefault();
-    const data = { projectName: 'Project 4' };
-    postNewProject(data);
-    // setShowModal(true);
-  };
-
-  // const postNewProject = async (e) => {
-  //   e.preventDefault();
-  //   request('http://localhost:8000/', 'POST', JSON.stringify({ projectName: 'Project 4' }))
-  //     .then((data) => {
-  //       setProjects(data);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
+  const onAddProject = () => dispatch(showAddProjectModal());
 
   useEffect(() => {
     getData();
@@ -75,6 +60,8 @@ const MainPage = () => {
       </div>
 
       {elements}
+
+      {isShowAddProjectModal && <AddProjectModal />}
     </div>
   );
 };

@@ -7,10 +7,12 @@ import App from './app/App';
 import { Provider } from 'react-redux';
 import { combineReducers } from 'redux';
 import projectsReducer from './redux/reducers/projectsReducer';
+import modalReducer from './redux/reducers/modalReducer';
+
+const rootReducer = combineReducers({ projectsReducer, modalReducer });
 
 const store = createStore(
-  // combineReducers({ projectsReducer }),
-  projectsReducer,
+  rootReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

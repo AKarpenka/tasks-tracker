@@ -2,21 +2,17 @@ import './Project.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useHttp } from '../../hooks/http.hook';
+import useTasksTrackerService from '../../services/TasksTrackerService';
 
 // eslint-disable-next-line react/prop-types
 const Project = ({ project }) => {
   // eslint-disable-next-line react/prop-types
   const { id, project_name } = project;
-  const { request } = useHttp();
+  const { deleteProject } = useTasksTrackerService();
 
   const onDeleteProject = async (e) => {
     e.preventDefault();
-    request(`http://localhost:8000/${id}`, 'DELETE')
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => console.error(error));
+    deleteProject(id);
   };
 
   return (

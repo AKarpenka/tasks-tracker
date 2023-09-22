@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { legacy_createStore as createStore } from 'redux';
-import { Provider } from 'react-redux';
 import './styles/index.scss';
 import App from './app/App';
-import mainReducer from './redux/redusers/mainReduser';
+
+import { Provider } from 'react-redux';
+import { combineReducers } from 'redux';
+import projectsReducer from './redux/reducers/projectsReducer';
 
 const store = createStore(
-  mainReducer,
+  // combineReducers({ projectsReducer }),
+  projectsReducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 

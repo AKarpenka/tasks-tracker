@@ -1,29 +1,24 @@
 import './MainPage.scss';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Project from '../../components/Project/Project';
-import { useHttp } from '../../hooks/http.hook';
+import Spinner from '../../components/Spinner/Spinner';
+import useTasksTrackerService from '../../services/TasksTrackerService';
 // import withModal from '../../components/Modal/Modal';
 
 const MainPage = () => {
-  const [projects, setProjects] = useState([]);
+  const { getData } = useTasksTrackerService();
+  const projects = useSelector((state) => state.projects);
+  const projectsLoadingStatus = useSelector((state) => state.projectsLoadingStatus);
   // const [showModal, setShowModal] = useState(false);
-  const { request } = useHttp();
 
   // const ModalContent = () => {
   //   return <h1>Hello</h1>;
   // };
 
   // const AddProjectModal = withModal(AddProjectModalContent);
-
-  const getData = async () => {
-    request(`http://localhost:8000/`)
-      .then((data) => {
-        setProjects(data);
-      })
-      .catch((err) => console.error(err));
-  };
 
   const onAddProject = () => {
     // setShowModal(true);
@@ -40,7 +35,33 @@ const MainPage = () => {
 
   useEffect(() => {
     getData();
-  }, [projects]);
+  }, []);
+
+  if (projectsLoadingStatus === 'loading') {
+    return <Spinner />;
+  } else if (projectsLoadingStatus === 'error') {
+    return <p>Loading Error</p>;
+  }
+
+  const renderProjectsList = (arr) => {
+    if (arr.length === 0) {
+      return <p>No projects</p>;
+    }
+
+    return (
+      <ul>
+        {arr.map((project) => {
+          return (
+            <li key={project.id}>
+              <Project project={project} />
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  const elements = renderProjectsList(projects);
 
   return (
     <div className="main-page-container">
@@ -50,21 +71,7 @@ const MainPage = () => {
         Add project <FontAwesomeIcon className="faPlus" icon={faPlus} />
       </div>
 
-      {projects.length ? (
-        <ul>
-          {projects.map((project) => {
-            return (
-              <li key={project.id}>
-                <Project project={project} />
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p>No projects</p>
-      )}
-
-      {/* <AddProjectModal /> */}
+      {elements}
     </div>
   );
 };

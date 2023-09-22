@@ -28,9 +28,8 @@ const useTasksTrackerService = () => {
   };
 
   //Ports one project
-  const postNewProject = async () => {
-    dispatch(projectsFetching());
-    request(_apiBase, 'POST', JSON.stringify({ projectName: 'Project 4' }))
+  const postNewProject = async (newProject) => {
+    request(_apiBase, 'POST', JSON.stringify(newProject))
       .then((data) => {
         dispatch(projectCreated(data));
       })
@@ -43,7 +42,7 @@ const useTasksTrackerService = () => {
   const deleteProject = async (id) => {
     request(`${_apiBase}${id}`, 'DELETE')
       .then(dispatch(projectDeleted(id)))
-      .catch((error) => console.error(error));
+      .catch(projectsFetchingError());
   };
 
   return {

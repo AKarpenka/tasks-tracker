@@ -24,9 +24,9 @@ app.post('/', async (req,res) => {
     const id = uuidv4();
     
     try {
-        const newProject = pool.query('INSERT INTO projects(id, project_name) VALUES($1, $2);', 
+        const newProject = await pool.query('INSERT INTO projects(id, project_name) VALUES($1, $2) RETURNING *;', 
                     [id, projectName]);
-        res.json(newProject);
+        res.json(newProject.rows[0]);
     } catch (error) {
         console.error(error);
     }

@@ -9,7 +9,7 @@ import useTasksTrackerService from '../../services/TasksTrackerService';
 // import withModal from '../../components/Modal/Modal';
 
 const MainPage = () => {
-  const { getData } = useTasksTrackerService();
+  const { getData, postNewProject } = useTasksTrackerService();
   const projects = useSelector((state) => state.projects);
   const projectsLoadingStatus = useSelector((state) => state.projectsLoadingStatus);
   // const [showModal, setShowModal] = useState(false);
@@ -20,7 +20,10 @@ const MainPage = () => {
 
   // const AddProjectModal = withModal(AddProjectModalContent);
 
-  const onAddProject = () => {
+  const onAddProject = (e) => {
+    e.preventDefault();
+    const data = { projectName: 'Project 4' };
+    postNewProject(data);
     // setShowModal(true);
   };
 

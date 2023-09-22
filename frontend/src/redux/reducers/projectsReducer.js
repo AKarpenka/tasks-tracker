@@ -32,7 +32,8 @@ const projectsReducer = (state = initialState, action) => {
     case PROJECT_CREATED:
       return {
         ...state,
-        projects: [...state.projects, action.payload]
+        projects: [...state.projects, action.payload],
+        projectsLoadingStatus: 'idle'
       };
     case PROJECT_DELETED:
       return {

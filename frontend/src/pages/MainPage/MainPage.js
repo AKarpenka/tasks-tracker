@@ -9,6 +9,7 @@ import useTasksTrackerService from '../../services/TasksTrackerService';
 import withModal from '../../components/Modal/ModalHOC/Modal';
 import AddProjectContentModal from '../../components/Modal/AddProjectContentModal/AddProjectContentModal';
 import { showAddProjectModal } from '../../redux/actions/modalAction';
+import RemoveContentModal from '../../components/Modal/RemoveContentModal/RemoveContentModal';
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,11 @@ const MainPage = () => {
   const { projects } = useSelector((state) => state.projectsReducer);
   const { projectsLoadingStatus } = useSelector((state) => state.projectsReducer);
   const isShowAddProjectModal = useSelector((state) => state.modalReducer.showAddProjectModal);
+  const isShowRemoveProjectModal = useSelector(
+    (state) => state.modalReducer.showRemoveProjectModal
+  );
 
+  const RemoveProjectModal = withModal(RemoveContentModal);
   const AddProjectModal = withModal(AddProjectContentModal);
 
   const onAddProject = () => dispatch(showAddProjectModal());
@@ -62,6 +67,7 @@ const MainPage = () => {
       {elements}
 
       {isShowAddProjectModal && <AddProjectModal />}
+      {isShowRemoveProjectModal && <RemoveProjectModal />}
     </div>
   );
 };

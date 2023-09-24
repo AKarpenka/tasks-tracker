@@ -1,0 +1,46 @@
+
+
+.task-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-height: 106px;
+    border-radius:10px;
+    max-width: 311px;
+    background: white;
+    margin-top: 15px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    cursor: default;
+
+    &:hover {
+      box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .first-details {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      p {
+        font-size: 11pt;
+      }
+    }
+
+    .title {
+      font-weight: 400;
+      font-size: 12pt;
+    }
+
+    .secondary-details {
+      margin-top: 15px;
+      width: 100%;
+
+      p, span {
+        font-size: 11pt;
+      }
+
+      }
+}

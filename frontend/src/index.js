@@ -8,8 +8,9 @@ import { Provider } from 'react-redux';
 import { combineReducers } from 'redux';
 import projectsReducer from './redux/reducers/projectsReducer';
 import modalReducer from './redux/reducers/modalReducer';
+import tasksReducer from './redux/reducers/tasksReducer';
 
-const rootReducer = combineReducers({ projectsReducer, modalReducer });
+const rootReducer = combineReducers({ projectsReducer, modalReducer, tasksReducer });
 
 const store = createStore(
   rootReducer,
@@ -18,9 +19,9 @@ const store = createStore(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>
+  // </React.StrictMode>
 );

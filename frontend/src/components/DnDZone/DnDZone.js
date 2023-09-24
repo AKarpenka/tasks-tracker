@@ -1,15 +1,16 @@
+/* eslint-disable react/prop-types */
 import './DndZone.scss';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import TaskCard from '../TaskCard/TaskCard';
-import { updateColumns } from '../../redux/actions/tasksAction';
 import { useEffect, useState } from 'react';
 
 const DnDZone = () => {
-  const dispatch = useDispatch();
-  const numberFilter = useSelector((state) => state.tasksReducer.numberFilter);
-  const columns = useSelector((state) => state.tasksReducer.columns);
-  const [filteredColumns, setFilteredColumns] = useState(columns);
+  const { numberFilter } = useSelector((state) => state.tasksReducer);
+  const { titleFilter } = useSelector((state) => state.tasksReducer);
+  const reduxColumns = useSelector((state) => state.tasksReducer.columns);
+  const [initColumns, setInitColumns] = useState(reduxColumns);
+  const [filteredColumns, setFilteredColumns] = useState(reduxColumns);
 
   const onDragEnd = (result, columns) => {
     if (!result.destination) return;
@@ -22,39 +23,41 @@ const DnDZone = () => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      dispatch(
-        updateColumns({
-          ...columns,
-          [source.droppableId]: {
-            ...sourceColumn,
-            items: sourceItems
-          },
-          [destination.droppableId]: {
-            ...destColumn,
-            items: destItems
-          }
-        })
-      );
+
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems
+        },
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      };
+
+      setInitColumns(newColumns);
+      filterData(newColumns);
     } else {
       console.log('в этой же колонке');
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
-      dispatch(
-        updateColumns({
-          ...columns,
-          [source.droppableId]: {
-            ...column,
-            items: copiedItems
-          }
-        })
-      );
+
+      const newColumns = {
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems
+        }
+      };
+      setInitColumns(newColumns);
+      filterData(newColumns);
     }
   };
 
-  const filterData = () => {
-    console.log('asdd');
+  const filterData = (columns) => {
     let filteredColumns = {};
     Object.entries(columns).map(([columnId, column]) => {
       filteredColumns = {
@@ -62,7 +65,10 @@ const DnDZone = () => {
         [columnId]: {
           ...column,
           items: column.items.filter(
-            (item) => item.number === '' || item.number.includes(numberFilter.trim())
+            (item) =>
+              item.task_number === '' ||
+              (item.task_number.includes(numberFilter.trim()) &&
+                (item.task_title === '' || item.task_title.includes(titleFilter.trim())))
           )
         }
       };
@@ -72,15 +78,11 @@ const DnDZone = () => {
   };
 
   useEffect(() => {
-    filterData();
-  }, [numberFilter]);
-
-  useEffect(() => {
-    filterData();
-  }, [columns]);
+    filterData(initColumns);
+  }, [numberFilter, titleFilter]);
 
   return (
-    <DragDropContext onDragEnd={(result) => onDragEnd(result, columns)}>
+    <DragDropContext onDragEnd={(result) => onDragEnd(result, initColumns)}>
       <div className="dnd-container">
         <div className="dnd-task-column">
           {Object.entries(filteredColumns).map(([columnId, column]) => {
@@ -93,7 +95,7 @@ const DnDZone = () => {
                     {...provided.droppableProps}>
                     <span className="dnd-task-list-title">{column.title}</span>
                     {column.items.map((item, index) => (
-                      <TaskCard key={item.id} item={item} index={index} />
+                      <TaskCard key={item.task_number} item={item} index={index} />
                     ))}
                     {provided.placeholder}
                   </div>

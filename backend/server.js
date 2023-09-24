@@ -44,4 +44,16 @@ app.delete('/:id', async (req, res) => {
     }
 });
 
+//get tasks
+app.get('/:projectId/:projectName/tasks/', async (req, res) => {
+    const {projectId} = req.params;
+
+    try {
+        const projects = await pool.query('SELECT * FROM tasks WHERE project_id = $1;', [projectId]);
+        res.json(projects.rows);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));

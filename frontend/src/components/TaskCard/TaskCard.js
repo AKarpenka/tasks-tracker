@@ -1,21 +1,35 @@
 /* eslint-disable react/prop-types */
 import './TaskCard.scss';
 import { Draggable } from 'react-beautiful-dnd';
+import Priority from '../Priority/Priority';
 
 const TaskCard = ({ item, index }) => {
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable key={item.task_number} draggableId={item.task_number} index={index}>
       {(provided) => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
           {' '}
           <div className="task-information">
-            <p>
-              <span>{item.number}</span> {item.title}
-            </p>
+            <div className="first-details">
+              <p>{item.task_number}</p>
+              <Priority mode={item.priority} />
+            </div>
+            <p className="title">{item.task_title}</p>
+
             <div className="secondary-details">
               <p>
+                Date of creation:&nbsp;
                 <span>
-                  {new Date(item.Due_Date).toLocaleDateString('en-us', {
+                  {new Date(item.creation_date).toLocaleDateString('en-us', {
+                    month: 'short',
+                    day: '2-digit'
+                  })}
+                </span>
+              </p>
+              <p>
+                Deadline:&nbsp;
+                <span>
+                  {new Date(item.deadline).toLocaleDateString('en-us', {
                     month: 'short',
                     day: '2-digit'
                   })}

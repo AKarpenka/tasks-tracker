@@ -10,7 +10,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/tasks/:projectName" element={<TasksPage />} />
+          <Route path="/:projectId/:projectName/tasks/" element={<TasksPage />} />
           <Route path="*" element={<Page404 />} />
         </Routes>
       </div>

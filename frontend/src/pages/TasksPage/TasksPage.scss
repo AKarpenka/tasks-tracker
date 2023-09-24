@@ -21,17 +21,36 @@ nav {
     background-color: $light-gray;
     border-radius: 20px;
     padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+
+    .add-task-btn {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        background-color: white;
+        box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        padding: 5px 10px;
+
+        .faPlus {
+            margin-left: 10px;
+        }
+
+        &:hover {
+            box-shadow: 4px 4px 6px 1px rgba(0, 0, 0, 0.2);
+        }
+    }
 
     div {
         font-size: 12pt;
-        margin-right: 30px;
 
         input[type="text"] {
             border-radius: 7px;
             border: 1px solid $gray;
             font-size: 10pt;
             padding: 5px 10px;
-            margin-left: 10px;
+            margin-left: 5px;
 
             &:focus { 
                 border: 1px  solid $green; 

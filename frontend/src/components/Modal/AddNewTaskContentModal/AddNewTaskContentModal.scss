@@ -1,0 +1,47 @@
+@import '../../../styles/variables.scss';
+
+.new-task-content {
+    .title {
+        font-size: 13pt;
+        font-weight: 400;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 20px;
+    }
+
+    .new-task-main-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        border-bottom: 1px solid #eaeaea;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"], select {
+        border-radius: 7px;
+        border: 1px solid $gray;
+        font-size: 12pt;
+        padding: 5px 10px;
+        width: 100%;
+        margin-bottom: 10px;
+
+        &:focus { 
+            border: 1px  solid $green; 
+            outline: none;
+        }
+    }
+
+    .new-task-btn {
+        display: flex;
+        justify-content: flex-end;
+
+        input {
+            margin: 0 0 0 20px;
+        }
+    }
+}
+
+.new-task-datePicker {
+    width: 100%;
+}

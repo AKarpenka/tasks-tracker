@@ -9,7 +9,7 @@ function App() {
     <Router>
       <div className="App">
         <header>
-          <img src="logo.png" alt="logo" height={'50px'} />
+          <img src="/logo.png" alt="logo" height={'50px'} />
           <h1>Tasks Tracker</h1>
         </header>
         <div className="content">

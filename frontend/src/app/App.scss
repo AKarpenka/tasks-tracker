@@ -1,3 +1,35 @@
+@import '../styles/variables.scss';
+
 .App {
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px 40px;
+  max-width: 1200px;
+  width: 100%;
+
+  header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+
+    h1 {
+      margin-left: 5px;
+      font-size: 16pt;
+      font-weight: 400;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+  }
+
+  footer {
+    align-self: center;
+    font-size: 10pt;
+    padding: 40px 0 20px 0;
+  }
 }

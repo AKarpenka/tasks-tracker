@@ -4,6 +4,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useSelector } from 'react-redux';
 import TaskCard from '../TaskCard/TaskCard';
 import { useEffect, useState } from 'react';
+import useTasksTrackerService from '../../services/TasksTrackerService';
 
 const DnDZone = () => {
   const { numberFilter } = useSelector((state) => state.tasksReducer);
@@ -11,12 +12,12 @@ const DnDZone = () => {
   const reduxColumns = useSelector((state) => state.tasksReducer.columns);
   const [initColumns, setInitColumns] = useState(reduxColumns);
   const [filteredColumns, setFilteredColumns] = useState(reduxColumns);
+  const { updateTaskStatus } = useTasksTrackerService();
 
   const onDragEnd = (result, columns) => {
     if (!result.destination) return;
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     if (source.droppableId !== destination.droppableId) {
-      console.log('в другой колонке');
       const sourceColumn = columns[source.droppableId];
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
@@ -38,8 +39,8 @@ const DnDZone = () => {
 
       setInitColumns(newColumns);
       filterData(newColumns);
+      updateTaskStatus(draggableId, destination.droppableId);
     } else {
-      console.log('в этой же колонке');
       const column = columns[source.droppableId];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);

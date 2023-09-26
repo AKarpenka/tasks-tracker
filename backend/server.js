@@ -56,4 +56,16 @@ app.get('/:projectId/:projectName/tasks/', async (req, res) => {
     }
 });
 
+//update task status
+app.put('/tasks/:taskNumber', async (req, res) => {
+    const {taskNumber} = req.params;
+    const {newStatus} = req.body;
+    try {
+        const editTaskStatus = await pool.query('UPDATE tasks SET status = $1 WHERE task_number = $2  RETURNING *;', [newStatus, taskNumber]);
+        res.json(editTaskStatus);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));

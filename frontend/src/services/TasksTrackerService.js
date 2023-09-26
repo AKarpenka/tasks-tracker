@@ -73,11 +73,23 @@ const useTasksTrackerService = () => {
       });
   };
 
+  //Update task status
+  const updateTaskStatus = async (taskNumber, newStatus) => {
+    request(
+      `${_apiBase}tasks/${taskNumber}`,
+      'PUT',
+      JSON.stringify({ newStatus: newStatus })
+    ).catch(() => {
+      dispatch(tasksFetchingError());
+    });
+  };
+
   return {
     getData,
     postNewProject,
     deleteProject,
-    getTasks
+    getTasks,
+    updateTaskStatus
   };
 };
 

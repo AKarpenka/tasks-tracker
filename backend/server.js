@@ -68,4 +68,44 @@ app.put('/tasks/:taskNumber', async (req, res) => {
     }
 });
 
+//add new task
+app.post('/newTask', async (req,res) => {
+    const {
+        project_name,
+        project_id,
+        task_number,
+        task_title,
+        creation_date,
+        deadline,
+        time_inprogress,
+        priority,
+        status,
+        subtasks,
+        description,
+        files
+      } = req.body;
+    
+      
+    try {
+        pool.query('INSERT INTO tasks(project_name, project_id, task_number, task_title, priority, status, creation_date, deadline, time_inprogress, subtasks, description, files) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);', 
+                    [
+                        project_name,
+                        project_id,
+                        task_number,
+                        task_title,
+                        priority,
+                        status,
+                        creation_date,
+                        deadline,
+                        time_inprogress,
+                        subtasks,
+                        description,
+                        files
+                    ]);
+        res.json(res.statusCode);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));

@@ -3,7 +3,8 @@ import {
   FILTER_TASKS_BY_TITLE,
   TASKS_FETCHING,
   TASKS_FETCHED,
-  TASKS_FETCHING_ERROR
+  TASKS_FETCHING_ERROR,
+  UPDATE_NUMBER_OF_TASKS
 } from './types';
 
 export const filterTasksByNumber = (inputValue) => {
@@ -36,5 +37,12 @@ export const tasksFetched = (projects) => {
 export const tasksFetchingError = () => {
   return {
     type: TASKS_FETCHING_ERROR
+  };
+};
+
+export const updateNumberOfTasks = (number) => {
+  return {
+    type: UPDATE_NUMBER_OF_TASKS,
+    payload: number
   };
 };

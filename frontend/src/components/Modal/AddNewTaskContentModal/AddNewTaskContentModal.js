@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
+import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import './AddNewTaskContentModal.scss';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -10,13 +11,17 @@ import PreviewFiles from '../../PreviewFiles/PreviewFiles';
 import Subtasks from '../../Subtasks/Subtasks';
 import FilesDropZone from '../../FilesDropZone/FilesDropZone';
 import { hideAddNewTaskModal } from '../../../redux/actions/modalAction';
-import { addSubtask } from '../../../redux/actions/subtasksAction';
+import { addSubtask, deleteSubtask } from '../../../redux/actions/subtasksAction';
 import { v4 as uuidv4 } from 'uuid';
+import useTasksTrackerService from '../../../services/TasksTrackerService';
 
 const AddNewTask = () => {
+  const { projectId, projectName } = useParams();
+  const { postNewTask } = useTasksTrackerService();
   const dispatch = useDispatch();
   const subtaskRef = useRef();
   const { subtasks } = useSelector((state) => state.subtasksReducer);
+  const { numberOfTasks } = useSelector((state) => state.tasksReducer);
 
   const today = new Date();
 
@@ -31,15 +36,13 @@ const AddNewTask = () => {
   const [emptyDeadline, setEmptyDeadline] = useState(false);
 
   const handleInputChange = (e) => {
-    setEmptyTaskTitle(false);
-    setEmptyDeadline(false);
-
     switch (e.target.id) {
       case 'taskTitle':
+        setEmptyTaskTitle(false);
         setTaskTitle(e.target.value);
         break;
       case 'priority':
-        setPriority(e);
+        setPriority(e.target.value);
         break;
       case 'status':
         setStatus(e.target.value);
@@ -51,6 +54,7 @@ const AddNewTask = () => {
   };
 
   const handleDeadlineChange = (date) => {
+    setEmptyDeadline(false);
     setDeadline(date);
   };
 
@@ -75,24 +79,12 @@ const AddNewTask = () => {
     setFiles((prevFiles) => prevFiles.filter((prevFile) => prevFile.id !== fileId));
   };
 
-  // const handleUploadFiles = () => {
-  //   const formData = new FormData();
-  //   files.forEach((file) => {
-  //     formData.append(file.id, new Blob([file], { type: file.type }), file.name || 'file');
-  //   });
+  const onCloseModal = () => {
+    dispatch(hideAddNewTaskModal());
+    dispatch(deleteSubtask([]));
+  };
 
-  //   axios
-  //     .post('/files', formData)
-  //     .then(() => {
-  //       window.alert(`${files.length} files uploaded succesfully!`);
-  //       setFiles([]);
-  //     })
-  //     .catch((err) => {
-  //       window.alert(`Error uploading files: ${err.message}`);
-  //     });
-  // };
-
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = () => {
     if (!taskTitle) {
       setEmptyTaskTitle(true);
       return;
@@ -103,28 +95,23 @@ const AddNewTask = () => {
       return;
     }
 
-    const formData = new FormData();
-    console.log(files);
-    files.forEach((file) => {
-      formData.append(file.id, new Blob([file], { type: file.type }), file.name || 'file');
-    });
-    // for (var key of formData.entries()) {
-    //   console.log(key[0] + ', ' + key[1]);
-    // }
-
     const data = {
-      taskTitle,
-      deadline,
+      project_name: projectName,
+      project_id: projectId,
+      task_number: `${projectName}-${numberOfTasks + 1}`,
+      task_title: taskTitle,
+      creation_date: Date.now(),
+      deadline: new Date(deadline).getTime(),
+      time_inprogress: 0,
       priority,
       status,
-      subtasks,
+      subtasks: JSON.stringify(subtasks),
       description,
-      files: formData
+      files: JSON.stringify(files)
     };
-    console.log(data);
+    postNewTask(data, projectId, projectName);
+    onCloseModal();
   };
-
-  const onCloseModal = () => dispatch(hideAddNewTaskModal());
 
   return (
     <div className="new-task-wrapper">
@@ -141,9 +128,6 @@ const AddNewTask = () => {
               onChange={handleInputChange}
               required
             />
-            {emptyTaskTitle && (
-              <p className="warning">Please fill in the field with the name of the task</p>
-            )}
           </label>
           {/* <label>
           Time at work:
@@ -158,10 +142,10 @@ const AddNewTask = () => {
               onChange={handleDeadlineChange}
               minDate={today}
               todayButton={'Today'}
+              onKeyDown={(e) => {
+                e.preventDefault();
+              }}
             />
-            {emptyDeadline && (
-              <p className="warning">Please fill in the field with the date of deadline</p>
-            )}
           </label>
           <label>
             Priority:
@@ -198,7 +182,7 @@ const AddNewTask = () => {
             <Editor
               id="description"
               apiKey="zuurtwf0xtns32n7ir2d5qiauz31636syg6ijjiyf96da1pa"
-              initialValue="<p>This is the initial content of the editor</p>"
+              initialValue=""
               init={{
                 plugins: 'link image code',
                 toolbar:
@@ -222,6 +206,12 @@ const AddNewTask = () => {
         <Button value="Create" colorMode="ok" onClickBtn={handleSubmitForm} />
         <Button value="Cancel" colorMode="danger" onClickBtn={onCloseModal} />
       </div>
+      {emptyTaskTitle && (
+        <p className="warning">Please fill in the field with the name of the task</p>
+      )}
+      {emptyDeadline && (
+        <p className="warning">Please fill in the field with the date of deadline</p>
+      )}
     </div>
   );
 };

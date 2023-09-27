@@ -3,14 +3,16 @@ import {
   FILTER_TASKS_BY_TITLE,
   TASKS_FETCHING,
   TASKS_FETCHED,
-  TASKS_FETCHING_ERROR
+  TASKS_FETCHING_ERROR,
+  UPDATE_NUMBER_OF_TASKS
 } from '../actions/types';
 
 const initialState = {
   columns: {},
   numberFilter: '',
   titleFilter: '',
-  tasksLoadingStatus: 'idle'
+  tasksLoadingStatus: 'idle',
+  numberOfTasks: 0
 };
 
 const tasksReducer = (state = initialState, action) => {
@@ -40,6 +42,11 @@ const tasksReducer = (state = initialState, action) => {
       return {
         ...state,
         tasksLoadingStatus: 'error'
+      };
+    case UPDATE_NUMBER_OF_TASKS:
+      return {
+        ...state,
+        numberOfTasks: action.payload
       };
     default:
       return state;

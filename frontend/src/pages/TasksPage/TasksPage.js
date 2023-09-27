@@ -24,7 +24,11 @@ const TasksPage = () => {
   const onFilterByNumber = (e) => dispatch(filterTasksByNumber(e.target.value));
   const onFilterByTitle = (e) => dispatch(filterTasksByTitle(e.target.value));
 
-  const onAddTask = () => dispatch(showAddNewTaskModal());
+  const onAddTask = () => {
+    dispatch(showAddNewTaskModal());
+    const rootDiv = document.querySelector('#root');
+    rootDiv.style.overflow = isShowAddNewTaskModal ? 'hidden' : 'auto';
+  };
 
   useEffect(() => {
     getTasks(projectId, projectName);

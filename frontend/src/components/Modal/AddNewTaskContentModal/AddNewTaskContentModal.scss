@@ -1,43 +1,89 @@
 @import '../../../styles/variables.scss';
 
-.new-task-content {
+.new-task-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
     .title {
         font-size: 13pt;
         font-weight: 400;
         padding-bottom: 20px;
         border-bottom: 1px solid #eaeaea;
-        margin-bottom: 20px;
     }
 
-    .new-task-main-content {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        border-bottom: 1px solid #eaeaea;
-        padding-bottom: 20px;
-        margin-bottom: 20px;
-    }
+    .new-task-content {
+        flex-grow: 1;
+        overflow-y: scroll;
+        padding: 10px 30px;
 
-    input[type="text"], select {
-        border-radius: 7px;
-        border: 1px solid $gray;
-        font-size: 12pt;
-        padding: 5px 10px;
-        width: 100%;
-        margin-bottom: 10px;
+        .new-task-main-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
 
-        &:focus { 
-            border: 1px  solid $green; 
-            outline: none;
+        input[type="text"], select, textarea {
+            border-radius: 7px;
+            border: 1px solid $grey;
+            font-size: 12pt;
+            padding: 5px 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            margin: 5px 0 10px 0;
+
+            &:focus { 
+                border: 1px  solid $green; 
+                outline: none;
+            }
+        }
+
+        .warning {
+            color: $danger;
+            margin-bottom: 20px;
+        }
+
+        .new-task-subtasks {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eaeaea;
+            margin-bottom: 20px;
+
+            button {
+                padding: 5px 10px;
+                background-color: white;
+                border-radius: 10px;
+                border: 1px solid $green;
+                transition: all 0.05s ease-in-out;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $green;
+                    color: white;
+                }
+
+                &:active {
+                    background-color: $green-dark;
+                }
+            }
+        }
+
+        .tox-tinymce {
+            margin: 10px 0 20px 0;
+            border: 1px solid #eaeaea;
         }
     }
+
+    
 
     .new-task-btn {
         display: flex;
         justify-content: flex-end;
 
         input {
-            margin: 0 0 0 20px;
+            margin: 20px 0 0 20px;
         }
     }
 }

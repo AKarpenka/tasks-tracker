@@ -1,0 +1,13 @@
+@import '../../styles/variables.scss';
+
+.files-dropzone {
+    padding: 20px;
+    border: 1px dashed $grey;
+    border-radius: 10px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.files-dropzone-active {
+    background-color: $light-grey;
+}

@@ -9,8 +9,14 @@ import { combineReducers } from 'redux';
 import projectsReducer from './redux/reducers/projectsReducer';
 import modalReducer from './redux/reducers/modalReducer';
 import tasksReducer from './redux/reducers/tasksReducer';
+import subtasksReducer from './redux/reducers/subtasksReducer';
 
-const rootReducer = combineReducers({ projectsReducer, modalReducer, tasksReducer });
+const rootReducer = combineReducers({
+  projectsReducer,
+  modalReducer,
+  tasksReducer,
+  subtasksReducer
+});
 
 const store = createStore(
   rootReducer,
